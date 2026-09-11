@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YouTube Assistant</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img id="brandLogo" class="brand-logo" src="/static/brand/logo.svg" alt="logo" />
+      <div>
+        <strong id="brandName">YouTube Assistant</strong>
+        <span>watch, ask, jump back</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <span id="apiState" class="status-dot">backend</span>
+      <button id="logoButton" class="ghost-button" type="button">Change logo</button>
+      <input id="logoInput" type="file" accept="image/svg+xml,image/png,image/jpeg,image/webp" hidden />
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="video-column">
+      <div class="load-bar">
+        <input id="videoUrl" type="text" placeholder="Paste a YouTube URL or video id" />
+        <button id="loadButton" type="button">Load video</button>
+      </div>
+
+      <p id="loadMessage" class="small-message">Use a public video with captions enabled.</p>
+
+      <div class="player-card">
+        <div id="player"></div>
+      </div>
+
+      <div class="video-meta">
+        <div>
+          <h1 id="videoTitle">No video loaded</h1>
+          <p id="videoChannel">Paste a link above to start.</p>
+        </div>
+        <div class="live-time">
+          <span>player time</span>
+          <strong id="playerTime">00:00</strong>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div>
+          <h2>Transcript</h2>
+          <p>Click a line to jump the YouTube player.</p>
+        </div>
+        <input id="transcriptSearch" type="search" placeholder="Find in transcript" />
+      </div>
+      <div id="transcriptList" class="transcript-list">
+        <div class="empty-panel">Transcript will appear here.</div>
+      </div>
+    </section>
+
+    <aside class="chat-column">
+      <div class="chat-head">
+        <div>
+          <h2>Ask this video</h2>
+          <p id="ragState">RAG is waiting for a video.</p>
+        </div>
+        <label class="focus-switch">
+          <input id="focusCurrent" type="checkbox" />
+          <span>focus near current time</span>
+        </label>
+      </div>
+
+      <div class="quick-prompts">
+        <button data-prompt="Summarize the video in 6 useful bullet points.">Summary</button>
+        <button data-prompt="What are the main ideas and how do they connect?">Key ideas</button>
+        <button id="explainHere">Explain here</button>
+      </div>
+
+      <div id="chatMessages" class="chat-messages">
+        <div class="assistant-message message">
+          Load a video, then ask questions. Source chips below each answer are clickable timestamps.
+        </div>
+      </div>
+
+      <form id="chatForm" class="chat-form">
+        <textarea id="question" rows="2" placeholder="Ask something from the video..." disabled></textarea>
+        <button id="sendButton" type="submit" disabled>Send</button>
+      </form>
+    </aside>
+  </main>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
