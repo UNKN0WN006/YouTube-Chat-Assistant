@@ -6,8 +6,10 @@
       "version": "lts"
     }
   },
-  "postCreateCommand": "python -m pip install --upgrade pip && pip install -r requirements-dev.txt",
-  "forwardPorts": [8000],
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y git-lfs && sudo apt-get clean && git lfs install",
+  "forwardPorts": [
+    8000
+  ],
   "portsAttributes": {
     "8000": {
       "label": "YouTube Assistant",
@@ -19,7 +21,10 @@
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance"
-      ]
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
+      }
     }
   }
 }
