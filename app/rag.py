@@ -69,6 +69,7 @@ def make_chunks(
 class VideoIndex:
     def __init__(self, model: Any, chunks: list[Chunk]):
         self.chunks = chunks
+        # Normalized vectors let a dot product behave like cosine similarity.
         self.embeddings = model.encode(
             [chunk.text for chunk in chunks],
             normalize_embeddings=True,
@@ -91,7 +92,7 @@ class VideoIndex:
         scores = self.embeddings @ query
 
         if focus_time is not None:
-            # Give a gentle bonus to chunks near the current playback position.
+            # Keep semantic relevance dominant, but gently prefer context near playback.
             centers = np.array([(c.start + c.end) / 2 for c in self.chunks])
             distance = np.abs(centers - focus_time)
             time_bonus = np.exp(-distance / 90.0) * 0.25
@@ -109,6 +110,7 @@ class RagStore:
 
     def _embedding_model(self) -> Any:
         if self.model is None:
+            # Load the embedding model only when the first video is indexed.
             from sentence_transformers import SentenceTransformer
 
             self.model = SentenceTransformer(EMBEDDING_MODEL)
